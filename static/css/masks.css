@@ -1,0 +1,59 @@
+.edit-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/edit.svg");
+}
+
+.trash-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/trash.svg");
+}
+
+.allow-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/allow.svg");
+}
+
+.cross-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/cross.svg");
+}
+
+.add-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/add-icon.svg");
+}
+
+.notification-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/notification.svg");
+}
+
+.theme-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/theme.svg");
+}
+
+.record-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/camera.svg");
+}
+
+.on-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/on.svg");
+}
+
+.off-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/off.svg");
+}
+
+.refresh-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/refresh.svg");
+}
+
+.download-mask {
+  background-color: var(--text);
+  mask-image: url("/static/icons/custom-theme-icons/download.svg");
+}

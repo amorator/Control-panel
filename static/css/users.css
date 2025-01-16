@@ -1,0 +1,46 @@
+.users-page {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+}
+
+.users-page__table {
+  width: 100%;
+  border: none;
+  margin-bottom: 20px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.search {
+  display: flex;
+  color: var(--text);
+}
+
+.search input {
+  color: var(--text);
+}
+
+.search-cross {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.add-button {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.icon-block {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
