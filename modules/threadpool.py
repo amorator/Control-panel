@@ -1,8 +1,8 @@
 from threading import Thread
-from subprocess import Popen
 from time import sleep
 
-class ThreadPool():
+
+class ThreadPool:
     def __init__(self, max=4):
         self.max = max
         self.procs = []

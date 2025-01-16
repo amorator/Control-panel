@@ -1,71 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Заявки Наряды Видео</title>
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="{{ url_for('static', filename='icons/favicon.png') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static',filename='fonts/fonts.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{url_for('static',filename='css/reset.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/themes/styles' + session['theme'] | string + '.css' if session['theme'] else 'css/themes/styles0' + '.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/base.css') }}"
-    />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/masks.css') }}">
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='js/jquery.min.js') }}"
-    ></script>
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='js/scripts.js') }}"
-    ></script>
+    <title>Панель управления</title>
+    <link rel="icon"
+          type="image/x-icon"
+          href="{{ url_for('static', filename='icons/favicon.png') }}" />
+    <link rel="stylesheet"
+          href="{{ url_for('static',filename='fonts/fonts.css') }}" />
+    <link rel="stylesheet"
+          href="{{ url_for('static',filename='css/reset.css') }}" />
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/themes/styles' + session['theme'] | string + '.css' if session['theme'] else 'css/themes/styles0' + '.css') }}" />
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/base.css') }}" />
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/masks.css') }}">
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     <meta charset="utf-8" />
-    {% block headextra %} {% endblock %}
+    {% block headextra %}{% endblock %}
   </head>
   <body>
-    {% for message in get_flashed_messages() %}
-    <script>
-      alert("{{ message }}");
-    </script>
-    {% endfor %} {% if current_user.is_authenticated %}
-    <header class="header">
-      <nav class="header__menu">
-        <ul class="menu">
-          <li class="menu__item">
-            <a href="/" class="link" 
-              }}
-              >Главная</a
-            >
-          </li>
-      </nav>
-      <div class="header__settings">
-        {% if current_user.is_allowed(6) %}
-        <a href="/usrs" class="link" 
-          >Пользователи</a
-        >{% endif %}
-        <a class="header__setting mask theme-mask" id="btntheme" href="{{ url_for('theme') }}">
-        </a>
-        <a  class="header__setting mask notification-mask" id="btnnotmenu" href="#" onclick="notifyTest();">
-        </a>
-        <a href="/logout" class="link"
-          >Выход ({{ current_user.name }})</a
-        >
-
-      </div>
-    </header>
-    {% endif %} {% block main %} {% endblock %}
-  </body>
-</html>
+    {% for message in get_flashed_messages() %}<script>alert("{{ message }}");</script>{% endfor %}
+    {% if current_user.is_authenticated %}
+      <header class="header">
+        <nav class="header__menu">
+          <ul class="menu">
+            <li class="menu__item">
+              <a href="/" class="link" }}>Главная</a>
+            </li>
+          </nav>
+          <div class="header__settings">
+            {% if current_user.is_allowed(6) %}<a href="/usrs" class="link">Пользователи</a>{% endif %}
+            <a class="header__setting mask theme-mask"
+               id="btntheme"
+               href="{{ url_for('theme') }}"></a>
+            <a class="header__setting mask notification-mask"
+               id="btnnotmenu"
+               href="#"
+               onclick="notifyTest();"></a>
+            <a href="/logout" class="link">Выход ({{ current_user.name }})</a>
+          </div>
+        </header>
+      {% endif %}
+      {% block main %}{% endblock %}
+    </body>
+  </html>

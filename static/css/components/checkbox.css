@@ -26,12 +26,11 @@
   cursor: pointer;
 }
 
-input[type="checkbox"]:checked + span {
+input[type="checkbox"]:checked+span {
   background-image: url("/static/icons/custom-theme-icons/allow.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
 
-input[type="checkbox"]:focus-visible + span {
-}
+input[type="checkbox"]:focus-visible+span {}

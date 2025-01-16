@@ -20,7 +20,7 @@ function popupKeys() {
       //validateForm(event.target.parentElement.parentElement);
     }
   });*/
-  document.addEventListener("keydown", function(event) {
+  document.addEventListener("keydown", function (event) {
     if (popup && event.key == "Escape") {
       event.preventDefault();
       popupToggle(popup);
@@ -32,11 +32,11 @@ function tableListener() {
   let table = document.getElementById("maintable");
   if (table != null) {
     let search = document.getElementById("searchinp");
-    search.addEventListener("input", function(event) {
+    search.addEventListener("input", function (event) {
       filterTable(table, search.value);
     });
     Array.from(table.getElementsByTagName('th')).forEach((th) => {
-      th.addEventListener("click", function(event) {
+      th.addEventListener("click", function (event) {
         sortTable(table, event.target);
       });
     });
@@ -52,7 +52,7 @@ function displayName(name) {
   }
 }
 
-function popupToggle(x, id=0) {
+function popupToggle(x, id = 0) {
   const overlay = document.getElementById(x);
   if (!popup) {
     popupValues(overlay.getElementsByTagName("form")[0], id);
@@ -76,14 +76,14 @@ function searchClean() {
 }
 
 function sortTable(table, th) {
-    const getCellValue = (tr, idx) => tr.children[idx] != null ? tr.children[idx].innerText || tr.children[idx].textContent : "";
-    table.dataset.asc = !(table.dataset.asc === "true");
-    const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
+  const getCellValue = (tr, idx) => tr.children[idx] != null ? tr.children[idx].innerText || tr.children[idx].textContent : "";
+  table.dataset.asc = !(table.dataset.asc === "true");
+  const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
     (v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)) || (/^\d+$/.test(v1) && /^\d+$/.test(value)) ? v1 - v2 : v1.toString().localeCompare(v2)
-    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
-  	Array.from(table.querySelectorAll('tr:nth-child(n+2)')).slice(0)
-    	.sort(comparer(Array.from(th.parentNode.children).indexOf(th), table.dataset.asc === "true"))
-    	.forEach(tr => table.appendChild(tr));
+  )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+  Array.from(table.querySelectorAll('tr:nth-child(n+2)')).slice(0)
+    .sort(comparer(Array.from(th.parentNode.children).indexOf(th), table.dataset.asc === "true"))
+    .forEach(tr => table.appendChild(tr));
 
 }
 
@@ -107,7 +107,7 @@ function filterTable(table, filter) {
 }
 
 var popup = null;
-$(document).ready(function() {
+$(document).ready(function () {
   popupKeys();
   tableListener();
 });
@@ -116,7 +116,7 @@ function notifyTest() {
   if (!("Notification" in window)) {
     alert("Уведомления не поддерживаются!");
   } else if (Notification.permission === "granted") {
-    const notification = new Notification("Провер04ka", {body: "Test\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest\// NOTE: Test\n", icon: "/static/icons/notification_menu.png", requireInteraction: true});
+    const notification = new Notification("Провер04ka", { body: "Test\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest\// NOTE: Test\n", icon: "/static/icons/notification_menu.png", requireInteraction: true });
   } else if (Notification.permission !== "denied") {
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {

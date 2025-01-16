@@ -29,6 +29,6 @@ progress::-moz-progress-bar {
   content: "не загружено";
 }
 
-.upload__status:empty + span {
+.upload__status:empty+span {
   display: none;
 }

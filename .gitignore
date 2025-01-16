@@ -7,3 +7,4 @@ static/stuff
 server.sock
 Pipfile
 Pipfile.lock
+*.code-workspace

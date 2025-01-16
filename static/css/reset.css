@@ -1,15 +1,16 @@
 *,
 *::after,
-*::before{
+*::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-ol,ul{
+ol,
+ul {
     list-style-type: none;
 }
 
-img{
+img {
     width: 100%;
 }

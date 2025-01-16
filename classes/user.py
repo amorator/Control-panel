@@ -1,34 +1,35 @@
 from flask_login import UserMixin
 
+
 class User(UserMixin):
     def __init__(self, id, login, name, password, enabled, permission):
-         self.id = id
-         self.login = login
-         self.name = name
-         self.password = password
-         self.enabled = enabled
-         self.authenticated = False
-         self.permission = permission.split(',')
+        self.id = id
+        self.login = login
+        self.name = name
+        self.password = password
+        self.enabled = enabled
+        self.authenticated = False
+        self.permission = permission.split(",")
 
     def is_anonymous(self):
-         return False
+        return False
 
     def is_authenticated(self):
-         return self.authenticated
+        return self.authenticated
 
     def is_active(self):
-         return self.active
+        return self.active
 
     def is_enabled(self):
-         return int(self.enabled)
+        return int(self.enabled)
 
     def get_id(self):
-         return self.id
+        return self.id
 
     def is_admin(self, id):
-        return 'z' in self.permission[id]
+        return "z" in self.permission[id]
 
-    def is_allowed(self, id, perm='a'):
+    def is_allowed(self, id, perm="a"):
         if id <= 0:
             return True
         id -= 1
@@ -37,4 +38,4 @@ class User(UserMixin):
         return self.is_admin(id) or perm in self.permission[id]
 
     def permission_string(self):
-        return ','.join(self.permission)
+        return ",".join(self.permission)

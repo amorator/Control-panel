@@ -1,340 +1,248 @@
-{% extends 'base.html' %} {% block headextra %}
-<link rel="stylesheet" href="{{url_for('static',filename='css/table.css')}}" />
-<link rel="stylesheet" href="{{url_for('static',filename='css/users.css')}}" />
-<link rel="stylesheet" href="{{url_for('static',filename='css/popup.css')}}" />
-<link
-  rel="stylesheet"
-  href="{{url_for('static',filename='css/components/select.css')}}"
-/>
-<link
-  rel="stylesheet"
-  href="{{url_for('static',filename='css/components/input.css')}}"
-/>
-<link
-  rel="stylesheet"
-  href="{{url_for('static',filename='css/components/checkbox.css')}}"
-/>
-<script
-  type="text/javascript"
-  src="{{ url_for('static', filename='js/users.js') }}"
-></script>
-{% endblock %} {% block main %}
-
-<section class="users-page">
-  <table class="users-page__table table" id="maintable">
-    <thead class="table__head">
-      <tr class="table__head_row">
-        <th class="table__head_item">ИД</th>
-        <th class="table__head_item">Логин</th>
-        <th class="table__head_item">Имя</th>
-        <th class="table__head_item">Права</th>
-        <th class="table__head_item">Активен</th>
-        <th class="table__head_item">Управление</th>
-      </tr>
-    </thead>
-    <tbody class="table__body">
-      <tr id="search" class="table__body_actions">
-        <td class="table__body_action" colspan="5">
-          <div class="search">
-            <input id="searchinp" type="text" placeholder="Поиск..." />
-            <div
-              class="search-cross mask cross-mask"
-              onclick="searchClean()"
-            ></div>
+{% extends 'base.html' %}
+{% block headextra %}
+  <link rel="stylesheet"
+        href="{{ url_for('static',filename='css/table.css') }}" />
+  <link rel="stylesheet"
+        href="{{ url_for('static',filename='css/users.css') }}" />
+  <link rel="stylesheet"
+        href="{{ url_for('static',filename='css/popup.css') }}" />
+  <link rel="stylesheet"
+        href="{{ url_for('static',filename='css/components/select.css') }}" />
+  <link rel="stylesheet"
+        href="{{ url_for('static',filename='css/components/input.css') }}" />
+  <link rel="stylesheet"
+        href="{{ url_for('static',filename='css/components/checkbox.css') }}" />
+  <script type="text/javascript"
+          src="{{ url_for('static', filename='js/users.js') }}"></script>
+{% endblock %}
+{% block main %}
+  <section class="users-page">
+    <table class="users-page__table table" id="maintable">
+      <thead class="table__head">
+        <tr class="table__head_row">
+          <th class="table__head_item">ИД</th>
+          <th class="table__head_item">Логин</th>
+          <th class="table__head_item">Имя</th>
+          <th class="table__head_item">Права</th>
+          <th class="table__head_item">Активен</th>
+          <th class="table__head_item">Управление</th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+        <tr id="search" class="table__body_actions">
+          <td class="table__body_action" colspan="5">
+            <div class="search">
+              <input id="searchinp" type="text" placeholder="Поиск..." />
+              <div class="search-cross mask cross-mask" onclick="searchClean()"></div>
+            </div>
+          </td>
+          <td class="table__body_action">
+            {% if current_user.is_allowed(1, 'b') %}
+              <div class="mask add-mask add-button" onclick="popupToggle('popup-add');"></div>
+            {% endif %}
+          </td>
+        </tr>
+        {% if users %}
+          {% for user in users %}
+            <tr id="{{ user.id }}" class="table__body_row">
+              <td class="table__body_item">{{ user.id }}</td>
+              <td class="table__body_item">{{ user.login }}</td>
+              <td class="table__body_item">{{ user.name }}</td>
+              <td class="table__body_item">{{ user.permission_string() }}</td>
+              <td class="table__body_item" data-enabled="{{ user.is_enabled() }}">
+                <a href="{{ url_for('users_toggle', id=user.id) if user.login != 'admin' and current_user.is_allowed(1, 'z') else '#' }}">
+                  <div class="mask icon-block {{ 'on-mask' if user.is_enabled() else 'off-mask'}}"></div>
+                </a>
+              </td>
+              <td class="table__body_item">
+                <div class="actions">
+                  {% if current_user.is_allowed(1, 'z') %}
+                    <div class="mask refresh-mask icon-block"
+                         onclick="popupToggle('popup-reset', {{ user.id }});"></div>
+                    {% if user.login != 'admin' %}
+                      <div class="mask edit-mask icon-block"
+                           onclick="popupToggle('popup-edit', {{ user.id }});"></div>
+                      <div class="mask trash-mask icon-block"
+                           onclick="popupToggle('popup-delete', {{ user.id }});"></div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+  </section>
+  <div id="popup-add" class="overlay-container">
+    <div class="popup">
+      <h1 class="popup__title">Добавление пользователя</h1>
+      <div class="popup__body">
+        <form class="popup__form"
+              id="add"
+              name="add"
+              action="{{ url_for('users_add') }}"
+              method="post">
+          <div class="popup__form-control form-control">
+            <label class="form-control__label">Логин:</label>
+            <input type="text"
+                   name="login"
+                   class="input form-control__control"
+                   placeholder="Введите логин..."
+                   autocomplete="one-time-code" />
           </div>
-        </td>
-        <td class="table__body_action">
-          {% if current_user.is_allowed(1, 'b') %}
-          <div
-            class="mask add-mask add-button"
-            onclick="popupToggle('popup-add');"
-          ></div>
-          {% endif %}
-        </td>
-      </tr>
-      {% if users %} {% for user in users %}
-
-      <tr id="{{ user.id }}" class="table__body_row">
-        <td class="table__body_item">{{ user.id }}</td>
-        <td class="table__body_item">{{ user.login }}</td>
-        <td class="table__body_item">{{ user.name }}</td>
-        <td class="table__body_item">{{ user.permission_string() }}</td>
-        <td class="table__body_item" data-enabled="{{ user.is_enabled() }}">
-          <a
-            href="{{ url_for('users_toggle', id=user.id) if user.login != 'admin' and current_user.is_allowed(1, 'z') else '#'}}"
-          >
-            <div
-              class="mask icon-block {{'on-mask' if user.is_enabled() else 'off-mask'}}"
-            ></div>
-          </a>
-        </td>
-
-        <td class="table__body_item">
-          <div class="actions">
-            {% if current_user.is_allowed(1, 'z') %}
-            <div
-              class="mask refresh-mask icon-block"
-              onclick="popupToggle('popup-reset', {{ user.id }});"
-            ></div>
-            {% if user.login != 'admin' %}
-            <div
-              class="mask edit-mask icon-block"
-              onclick="popupToggle('popup-edit', {{ user.id }});"
-            ></div>
-            <div
-              class="mask trash-mask icon-block"
-              onclick="popupToggle('popup-delete', {{ user.id }});"
-            ></div>
-
-            {% endif %} {% endif %}
+          <div class="popup__form-control form-control">
+            <label class="form-control__label">Имя:</label>
+            <input type="text"
+                   name="name"
+                   class="input form-control__control"
+                   placeholder="Введите имя..."
+                   autocomplete="one-time-code" />
           </div>
-        </td>
-      </tr>
-      {% endfor %} {% endif %}
-    </tbody>
-  </table>
-</section>
-
-<div id="popup-add" class="overlay-container">
-  <div class="popup">
-    <h1 class="popup__title">Добавление пользователя</h1>
-    <div class="popup__body">
-      <form
-        class="popup__form"
-        id="add"
-        name="add"
-        action="{{ url_for('users_add') }}"
-        method="post"
-      >
-        <div class="popup__form-control form-control">
-          <label class="form-control__label">Логин:</label>
-          <input
-            type="text"
-            name="login"
-            class="input form-control__control"
-            placeholder="Введите логин..."
-            autocomplete="one-time-code"
-          />
-        </div>
-        <div class="popup__form-control form-control">
-          <label class="form-control__label">Имя:</label>
-          <input
-            type="text"
-            name="name"
-            class="input form-control__control"
-            placeholder="Введите имя..."
-            autocomplete="one-time-code"
-          />
-        </div>
-        <div class="popup__form-control form-control">
-          <label class="form-control__label">Пароль:</label>
-          <input
-            type="password"
-            name="password"
-            class="input form-control__control"
-            placeholder="Введите пароль..."
-            autocomplete="one-time-code"
-          />
-        </div>
-        <div class="popup__form-control form-control">
-          <label class="form-control__label">Подтвердите пароль:</label>
-          <input
-            type="password"
-            name="password2"
-            class="input form-control__control"
-            placeholder="Подтвердите пароль..."
-            autocomplete="one-time-code"
-          />
-        </div>
-        <div class="popup__form-control form-control">
-          <label class="checkbox"
-            >Активен:
-
-            <input
-              class="visually-hidden"
-              type="checkbox"
-              name="enabled"
-              checked
-            />
-
-            <span class="checkbox__flag"></span>
-          </label>
-        </div>
-        {% include 'user_permission.html' %}
-
-        <div class="popup__actions">
-          <button
-            type="submit"
-            class="button button_success"
-            onclick="validateForm(this.parentElement.parentElement);"
-          >
-            Добавить
-          </button>
-          <button
-            class="button button_cancel"
-            onclick="popupToggle('popup-add');"
-          >
-            Отмена
-          </button>
-        </div>
-      </form>
+          <div class="popup__form-control form-control">
+            <label class="form-control__label">Пароль:</label>
+            <input type="password"
+                   name="password"
+                   class="input form-control__control"
+                   placeholder="Введите пароль..."
+                   autocomplete="one-time-code" />
+          </div>
+          <div class="popup__form-control form-control">
+            <label class="form-control__label">Подтвердите пароль:</label>
+            <input type="password"
+                   name="password2"
+                   class="input form-control__control"
+                   placeholder="Подтвердите пароль..."
+                   autocomplete="one-time-code" />
+          </div>
+          <div class="popup__form-control form-control">
+            <label class="checkbox">
+              Активен:
+              <input class="visually-hidden" type="checkbox" name="enabled" checked />
+              <span class="checkbox__flag"></span>
+            </label>
+          </div>
+          {% include 'user_permission.html' %}
+          <div class="popup__actions">
+            <button type="submit"
+                    class="button button_success"
+                    onclick="validateForm(this.parentElement.parentElement);">Добавить</button>
+            <button class="button button_cancel" onclick="popupToggle('popup-add');">Отмена</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-
-<div id="popup-edit" class="overlay-container">
-  <div class="popup">
-    <h1 class="popup__title">Редактирование пользователя</h1>
-    <div class="popup__body">
-      <form
-        class="popup__form"
-        id="edit"
-        name="edit"
-        action="{{ url_for('users_edit', id='0') }}"
-        method="post"
-      >
-        <div class="popup__form-control form-control">
-          <label class="form-control__label" for="name">Логин:</label>
-          <input
-            type="text"
-            name="login"
-            class="input form-control__control"
-            placeholder="Введите логин..."
-            autocomplete="one-time-code"
-          />
-        </div>
-        <div class="popup__form-control form-control">
-          <label class="form-control__label">Имя:</label>
-          <input
-            type="text"
-            name="name"
-            class="input form-control__control"
-            placeholder="Введите имя..."
-            autocomplete="one-time-code"
-          />
-        </div>
-        <div class="popup__form-control form-control">
-          <label class="checkbox"
-            >Активен:
-
-            <input
-              class="visually-hidden checkbox-active"
-              type="checkbox"
-              name="enabled"
-            />
-
-            <span class="checkbox__flag"></span>
-          </label>
-        </div>
-        {% include 'user_permission.html' %}
-        <div class="popup__actions">
-          <button
-            class="button button_success"
-            type="button"
-            onclick="validateForm(this.parentElement.parentElement);"
-          >
-            Сохранить
-          </button>
-
-          <button
-            class="button button_cancel"
-            type="button"
-            onclick="popupToggle('popup-edit');"
-          >
-            Отмена
-          </button>
-        </div>
-      </form>
+  <div id="popup-edit" class="overlay-container">
+    <div class="popup">
+      <h1 class="popup__title">Редактирование пользователя</h1>
+      <div class="popup__body">
+        <form class="popup__form"
+              id="edit"
+              name="edit"
+              action="{{ url_for('users_edit', id='0') }}"
+              method="post">
+          <div class="popup__form-control form-control">
+            <label class="form-control__label" for="name">Логин:</label>
+            <input type="text"
+                   name="login"
+                   class="input form-control__control"
+                   placeholder="Введите логин..."
+                   autocomplete="one-time-code" />
+          </div>
+          <div class="popup__form-control form-control">
+            <label class="form-control__label">Имя:</label>
+            <input type="text"
+                   name="name"
+                   class="input form-control__control"
+                   placeholder="Введите имя..."
+                   autocomplete="one-time-code" />
+          </div>
+          <div class="popup__form-control form-control">
+            <label class="checkbox">
+              Активен:
+              <input class="visually-hidden checkbox-active"
+                     type="checkbox"
+                     name="enabled" />
+              <span class="checkbox__flag"></span>
+            </label>
+          </div>
+          {% include 'user_permission.html' %}
+          <div class="popup__actions">
+            <button class="button button_success"
+                    type="button"
+                    onclick="validateForm(this.parentElement.parentElement);">Сохранить</button>
+            <button class="button button_cancel"
+                    type="button"
+                    onclick="popupToggle('popup-edit');">Отмена</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-
-<div id="popup-reset" class="overlay-container">
-  <div class="popup">
-    <h1 class="popup__title">Изменение пароля пользователя</h1>
-    <div class="popup__body">
-      <p>Установить новый пароль для <b>uname</b></p>
-      <form
-        class="form-container"
-        id="reset"
-        name="reset"
-        action="{{ url_for('users_reset', id='0') }}"
-        class="popup__form"
-        method="post"
-      >
-        <div class="popup__form-control form-control">
-          <label class="form-control__label">Новый пароль:</label>
-          <input
-            class="input form-control__control"
-            type="password"
-            name="password"
-            placeholder="Введите пароль..."
-            autocomplete="one-time-code"
-          />
-        </div>
-        <div class="popup__form-control form-control">
-          <label class="form-control__label">Подтвердите пароль:</label>
-          <input
-            class="input form-control__control"
-            type="password"
-            name="password2"
-            placeholder="Подтвердите пароль..."
-            autocomplete="one-time-code"
-          />
-        </div>
-
-        <div class="popup__actions">
-          <button
-            class="button button_success"
-            type="submit"
-            onclick="validateForm(this.parentElement.parentElement);"
-          >
-            изменить
-          </button>
-          <button
-            type="button"
-            class="button button_cancel"
-            onclick="popupToggle('popup-reset');"
-          >
-            отменить
-          </button>
-        </div>
-      </form>
+  <div id="popup-reset" class="overlay-container">
+    <div class="popup">
+      <h1 class="popup__title">Изменение пароля пользователя</h1>
+      <div class="popup__body">
+        <p>
+          Установить новый пароль для <b>uname</b>
+        </p>
+        <form class="form-container"
+              id="reset"
+              name="reset"
+              action="{{ url_for('users_reset', id='0') }}"
+              class="popup__form"
+              method="post">
+          <div class="popup__form-control form-control">
+            <label class="form-control__label">Новый пароль:</label>
+            <input class="input form-control__control"
+                   type="password"
+                   name="password"
+                   placeholder="Введите пароль..."
+                   autocomplete="one-time-code" />
+          </div>
+          <div class="popup__form-control form-control">
+            <label class="form-control__label">Подтвердите пароль:</label>
+            <input class="input form-control__control"
+                   type="password"
+                   name="password2"
+                   placeholder="Подтвердите пароль..."
+                   autocomplete="one-time-code" />
+          </div>
+          <div class="popup__actions">
+            <button class="button button_success"
+                    type="submit"
+                    onclick="validateForm(this.parentElement.parentElement);">изменить</button>
+            <button type="button"
+                    class="button button_cancel"
+                    onclick="popupToggle('popup-reset');">отменить</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-
-<div id="popup-delete" class="overlay-container">
-  <div class="popup">
-    <h1 class="popup__title">Удалить пользователя</h1>
-    <div class="popup__body">
-      <p>Вы действительно хотите удалить пользователя <b>uname</b>?</p>
-      <form
-        class="popup__form"
-        id="delete"
-        name="delete"
-        action="{{ url_for('users_delete', id='0') }}"
-        method="post"
-      >
-        <div class="popup__actions">
-          <button
-            type="submit"
-            class="button button_success"
-            onclick="validateForm(this.parentElement.parentElement);"
-          >
-            Удалить
-          </button>
-          <button
-            type="button"
-            class="button button_cancel"
-            onclick="popupToggle('popup-delete');"
-          >
-            Отмена
-          </button>
-        </div>
-      </form>
+  <div id="popup-delete" class="overlay-container">
+    <div class="popup">
+      <h1 class="popup__title">Удалить пользователя</h1>
+      <div class="popup__body">
+        <p>
+          Вы действительно хотите удалить пользователя <b>uname</b>?
+        </p>
+        <form class="popup__form"
+              id="delete"
+              name="delete"
+              action="{{ url_for('users_delete', id='0') }}"
+              method="post">
+          <div class="popup__actions">
+            <button type="submit"
+                    class="button button_success"
+                    onclick="validateForm(this.parentElement.parentElement);">Удалить</button>
+            <button type="button"
+                    class="button button_cancel"
+                    onclick="popupToggle('popup-delete');">Отмена</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-
 {% endblock %}
