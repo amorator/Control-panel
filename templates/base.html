@@ -29,22 +29,34 @@
         <nav class="header__menu">
           <ul class="menu">
             <li class="menu__item">
-              <a href="/" class="link" }}>Главная</a>
+              <a href="/"
+                 class="link"
+                 {{ "id=active" if request.endpoint=='index' else '' }}>Главная</a>
             </li>
-          </nav>
-          <div class="header__settings">
-            {% if current_user.is_allowed(6) %}<a href="/usrs" class="link">Пользователи</a>{% endif %}
-            <a class="header__setting mask theme-mask"
-               id="btntheme"
-               href="{{ url_for('theme') }}"></a>
-            <a class="header__setting mask notification-mask"
-               id="btnnotmenu"
-               href="#"
-               onclick="notifyTest();"></a>
-            <a href="/logout" class="link">Выход ({{ current_user.name }})</a>
-          </div>
-        </header>
-      {% endif %}
-      {% block main %}{% endblock %}
-    </body>
-  </html>
+            <li class="menu__item">
+              <a href="/vd"
+                 class="link"
+                 {{ "id=active" if request.endpoint.startswith("video") else '' }}>Видеонаблюдение</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="header__settings">
+          {% if current_user.is_allowed(6) %}
+            <a href="/usrs"
+               class="link"
+               {{ "id=active" if request.endpoint =='users' else '' }}>Пользователи</a>
+          {% endif %}
+          <a class="header__setting mask theme-mask"
+             id="btntheme"
+             href="{{ url_for('theme') }}"></a>
+          <a class="header__setting mask notification-mask"
+             id="btnnotmenu"
+             href="#"
+             onclick="notifyTest();"></a>
+          <a href="/logout" class="link">Выход ({{ current_user.name }})</a>
+        </div>
+      </header>
+    {% endif %}
+    {% block main %}{% endblock %}
+  </body>
+</html>

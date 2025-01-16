@@ -226,5 +226,20 @@ def users_delete(id):
 
 #######################################################
 
+
+@app.route("/vd", methods=["GET"])
+@app.permission_required(2)
+def video():
+    return render_template("video.html")
+
+
+@app.route("/vd_a", methods=["GET"])
+@app.permission_required(2, "b")
+def video_archive():
+    return render_template("video.html")
+
+
+#######################################################
+
 if __name__ == "__main__":
     app.run_debug()

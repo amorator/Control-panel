@@ -1,0 +1,20 @@
+{% block headextra %}
+    <link rel="stylesheet"
+          href="{{ url_for('static',filename='css/video.css') }}" />
+{% endblock %}
+{% block main %}
+    <aside class="sidebar">
+        <nav class="sidebar__menu">
+            <ul class="menu">
+                <li class="menu__item">
+                    <a href="{{ url_for('video') }}" class="link" {{ "id=active" if request.endpoint=='video' else ''
+                    }}>Просмотр</a>
+                </li>
+                <li class="menu__item">
+                    <a href="{{ url_for('video_archive') }}" class="link" {{ "id=active" if
+                    request.endpoint=='video_archive' else '' }}>Архив</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+{% endblock %}

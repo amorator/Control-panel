@@ -19,109 +19,6 @@ body {
   width: 99%;
 }
 
-/* form {
-  width: 50%;
-  text-align: center;
-  border: double 7px var(--fg);
-  border-radius: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin: 0 auto;
-} */
-
-/* form input[type=text] {
-  margin-bottom: 10px;
-}
-
-form input[type=password] {
-  margin-bottom: 25px;
-} */
-
-/* h1 {
-  text-align: center;
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
-
-a {
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-a:hover {
-  background-color: var(--bg);
-}
-
-a, a:visited, a:active {
-  color: inherit;
-} */
-
-/* input[type=text], input[type=password], input[type=number], textarea, input[type="datetime-local"], input[type="file"], button {
-  background-color: inherit;
-  color: inherit;
-  font-size: 18px;
-  border: 1px solid var(--fg);
-  color-scheme: dark;
-  cursor: pointer;
-} */
-
-textarea {
-  height: 100px;
-}
-
-select {
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-color: var(--bg2);
-  color: var(--fg);
-  font-size: 18px;
-  border: 1px solid var(--fg);
-  cursor: pointer;
-  background: url("/static/icons/arrow.png") no-repeat right;
-  background-size: 15px;
-}
-
-select option {
-  background-color: var(--bg2);
-}
-
-/* input[type="checkbox"] {
-  background-color: var(--bg);
-  color: var(--fg);
-  accent-color: var(--fg);
-} */
-
-/* table {
-  width: 100%;
-  table-layout: fixed;
-  word-wrap: break-word;
-  border-collapse: collapse;
-}
-
-table tr, td, th {
-  margin-top: 10px;
-  border: 1px solid var(--fg);
-  padding-left: 4px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  vertical-align: middle;
-}
-
-table tr td {
-  font-size: 16px;
-} */
-
-/* img {
-  padding-top: 3px;
-  padding-bottom: 3px;
-  vertical-align: middle;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-} */
-
 ::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 5px;
@@ -176,15 +73,6 @@ table tr td {
   padding-right: 2px;
 }
 
-/* #maintable tr, td {
-  margin-top: 10px;
-  border: 1px solid var(--fg);
-  padding-left: 4px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  vertical-align: top;
-} */
-
 .permissions th {
   text-align: center;
 }
@@ -196,21 +84,7 @@ table tr td {
   font-size: 16px;
 }
 
-.topnav {
-  background-color: var(--bg2);
-  overflow: hidden;
-}
 
-.topnav a {
-  float: left;
-  padding: 5px 20px 5px 20px;
-}
-
-.topnav a:hover,
-a.active {
-  background-color: var(--bg3);
-  color: black;
-}
 
 .right {
   float: right !important;
@@ -320,15 +194,6 @@ checkbox {
   width: 99%;
 }
 
-/* .btn {
-  text-align: center;
-  cursor: pointer;
-  background-color: var(--bg);
-  color: inherit;
-} */
-
-/*   egor  */
-
 html {
   height: 100%;
 }
@@ -364,7 +229,6 @@ body {
   color: var(--text);
   text-decoration: none;
   font-size: 18px;
-  /*text-transform: lowercase;*/
   padding: 10px;
   border-radius: 3px;
 }
@@ -383,7 +247,6 @@ body {
   color: var(--text);
   text-decoration: none;
   font-size: 18px;
-  /*text-transform: lowercase;*/
   padding: 10px;
   border-radius: 3px;
   cursor: pointer;
