@@ -1,9 +1,8 @@
 .sidebar {
-    position: fixed;
+    position: absolute;
     left: 0;
-    height: calc(100% - 70px);
+    width: 120px;
     background-color: var(--primary-900);
-    padding-top: 20px;
     overflow-x: hidden;
 }
 
@@ -30,8 +29,40 @@
 }
 
 .sidebar__settings {
-    position: absolute;
-    bottom: 20px;
     width: 100%;
     text-align: center;
+}
+
+.video {
+    margin-top: 20px;
+    margin-left: 140px;
+    display: inline-block;
+}
+
+.video__container {
+    display: inline-block;
+    margin-bottom: 10px;
+    background-color: var(--primary-500);
+}
+
+.video__box {
+    width: 640px;
+    height: 360px;
+    position: relative;
+}
+
+.video__controls {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.video__controls button {
+    margin: 0 5px;
+    padding: 10px 20px;
+    background-color: var(--primary-900);
+    color: var(--text);
+    border: none;
+    cursor: pointer;
 }

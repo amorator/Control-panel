@@ -230,7 +230,12 @@ def users_delete(id):
 @app.route("/vd", methods=["GET"])
 @app.permission_required(2)
 def video():
-    return render_template("video.html")
+    return render_template(
+        "video.html",
+        host=app._sql.config["cams"]["host"],
+        port=app._sql.config["cams"]["port"],
+        count=int(app._sql.config["cams"]["count"]),
+    )
 
 
 @app.route("/vd_a", methods=["GET"])
